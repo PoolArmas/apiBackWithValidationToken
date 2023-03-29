@@ -1,4 +1,4 @@
-# Spring Boot H2 Database CRUD example by Object Product
+# Spring Boot H2 Database CRUD example by Object User
 
 - Building Rest API with Spring Data JPA
 - Way to create Spring Rest Controller to process HTTP requests
