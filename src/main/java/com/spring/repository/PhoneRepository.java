@@ -12,5 +12,5 @@ import com.spring.model.Phone;
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
 	
 	Phone findByCitycode(int citycode);
-
+	
 }

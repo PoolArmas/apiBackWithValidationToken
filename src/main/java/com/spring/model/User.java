@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "USER_TEST")
@@ -13,7 +14,8 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private long userId;
+	@Column(name = "user_id")
+	private long id;
 	
 	@Column(name = "Name")
 	private String name;
@@ -27,9 +29,11 @@ public class User {
 	@Column(name = "Password")
 	private String password;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+	@JsonManagedReference
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Phone> phones;
 	
+	@JsonIgnore
 	@Column(name = "Token")
 	private String token;
 	
@@ -49,11 +53,11 @@ public class User {
 	private boolean isactive;
 
 	public long getId() {
-		return userId;
+		return id;
 	}
 
 	public void setId(long id) {
-		this.userId = id;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -133,7 +137,7 @@ public class User {
 			@NotEmpty(message = "Error, Password Empty!") String password, List<Phone> phones, String token,
 			LocalDateTime created, LocalDateTime lastLogin, LocalDateTime modified, boolean isactive) {
 		super();
-		this.userId = id;
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;

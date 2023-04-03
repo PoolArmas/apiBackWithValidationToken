@@ -2,6 +2,8 @@ package com.spring.dto;
 
 import java.time.LocalDateTime;
 
+import com.spring.model.User;
+
 public class UserDTO {
 	
 	private long id;
@@ -10,6 +12,8 @@ public class UserDTO {
 	private LocalDateTime last_login;
 	private String token;
 	private boolean isActive;
+	private User user;
+	
 	public long getId() {
 		return id;
 	}
@@ -47,6 +51,12 @@ public class UserDTO {
 		this.isActive = isActive;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public UserDTO(long id, LocalDateTime created, LocalDateTime modified, LocalDateTime last_login, String token,
 			boolean isActive) {
 		super();

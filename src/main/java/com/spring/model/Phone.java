@@ -2,6 +2,8 @@ package com.spring.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "PHONE")
 public class Phone {
@@ -19,9 +21,18 @@ public class Phone {
 	@Column(name = "countrycode")
 	private int countrycode;
 	
-	@JoinColumn(name = "userId", referencedColumnName = "userId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User userId;
+	@JsonBackReference
+    @ManyToOne
+	@JoinColumn(name = "user_id")
+    private User user;
+    
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public long getId() {
 		return id;
@@ -55,16 +66,16 @@ public class Phone {
 		this.countrycode = countrycode;
 	}
 
-	public Phone(long id, int number, int citycode, int countrycode) {
+	public Phone(long id, int number, int citycode, int countrycode, User userId) {
 		super();
 		this.id = id;
 		this.number = number;
 		this.citycode = citycode;
 		this.countrycode = countrycode;
+		this.user = userId;
 	}
 
 	public Phone() {
-		super();
 	}
 	
 	

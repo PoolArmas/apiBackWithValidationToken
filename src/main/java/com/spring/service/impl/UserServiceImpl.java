@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import com.spring.dto.MessageDTO;
 import com.spring.dto.ResponseDTO;
 import com.spring.dto.UserDTO;
+import com.spring.model.Phone;
 import com.spring.model.User;
+import com.spring.repository.PhoneRepository;
 import com.spring.repository.UserRepository;
 import com.spring.service.UserService;
 
@@ -22,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	PhoneRepository phoneRepository;
 
 	/**
 	 * Method created User after validations
@@ -141,9 +146,20 @@ public class UserServiceImpl implements UserService {
 		userRequest.setIsactive(true);
 		// Save User
 		userRepository.save(userRequest);
+		// save Phone
+		savePhone(userRepository.findByEmail(userRequest.getEmail()), userRequest.getPhones());
 		// set UserDTO
 		response.setUser(createdUserDTOResponse(userRequest));
 		return response;
+	}
+
+	private void savePhone(User findByEmail, List<Phone> phones) {
+		phones.forEach(phone -> {
+			Phone pho = phoneRepository.findByCitycode(phone.getCitycode());
+			pho.setUser(findByEmail);
+			phoneRepository.save(pho);
+		});
+
 	}
 
 	/**
@@ -163,10 +179,10 @@ public class UserServiceImpl implements UserService {
 				User n = old;
 				n.setName(userRequest.getName());
 				n.setPassword(userRequest.getPassword());
-				n.setPhones(userRequest.getPhones());
 				n.setLastLogin(LocalDateTime.now());
 				n.setModified(LocalDateTime.now());
 				userRepository.save(n);
+				updatedPHones(userRequest, n);
 				response.setMessage(null);
 				response.setUser(createdUserDTOResponse(n));
 				// Email Diferent, but Validations OK
@@ -175,10 +191,10 @@ public class UserServiceImpl implements UserService {
 				n.setEmail(userRequest.getEmail());
 				n.setName(userRequest.getName());
 				n.setPassword(userRequest.getPassword());
-				n.setPhones(userRequest.getPhones());
 				n.setLastLogin(LocalDateTime.now());
 				n.setModified(LocalDateTime.now());
 				userRepository.save(n);
+				updatedPHones(userRequest, n);
 				response.setMessage(null);
 				response.setUser(createdUserDTOResponse(n));
 				// With Error in Validations, return ERROR
@@ -191,6 +207,22 @@ public class UserServiceImpl implements UserService {
 
 		return response;
 
+	}
+
+	private void updatedPHones(User userRequest, User n) {
+
+		// delete Phones by userId
+		phoneRepository.findAll().forEach( phone ->{
+			if (phone.getUser().getId() == n.getId()) {
+				phoneRepository.delete(phone);
+			}
+		});
+		// Created new Phones
+		userRequest.getPhones().forEach(phone ->{
+			Phone pho = phone;
+			pho.setUser(n);
+			phoneRepository.save(pho);
+		});
 	}
 
 	/**
@@ -207,6 +239,7 @@ public class UserServiceImpl implements UserService {
 		userNew.setLast_login(user.getLastLogin());
 		userNew.setModified(user.getModified());
 		userNew.setToken(user.getToken());
+		userNew.setUser(user);
 		return userNew;
 	}
 
