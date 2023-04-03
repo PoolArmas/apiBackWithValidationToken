@@ -1,9 +1,7 @@
 package com.spring.service;
 
 import java.util.List;
-
 import com.spring.dto.ResponseDTO;
-import com.spring.dto.UserDTO;
 import com.spring.model.User;
 
 /**

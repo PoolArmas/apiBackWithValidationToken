@@ -9,4 +9,18 @@
 - Url Console H2 http://localhost:8080/h2-ui/
 - Config param (JDBC URL =jdbc:h2:mem:/test) in Console H2
 
+# How test
+
+1._ Genereta Token in https://jwt.io/
+
+     with payload :  "fechaToken": "2023-04-02",  date is a example
+	 
+	 the Api Validate Token with Date Now
+	 
+2._ Import Collection Postman , in your Postman local
+	 
+	 file ubication : src\test\java\com\spring\CollectionPostman
+	 
+	 
+
 
