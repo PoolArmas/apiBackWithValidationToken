@@ -22,5 +22,10 @@ public class MessageDTO {
 		this.msgDetail = msgDetail;
 	}
 
+	public MessageDTO() {
+	}
+	
+	
+
 
 }

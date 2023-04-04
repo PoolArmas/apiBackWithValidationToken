@@ -38,13 +38,16 @@ public class UserController {
 	@GetMapping("/getUsers")
 	public ResponseEntity<Object> getAllUsers() {
 
-		List<User> users = userService.getUsers();
-		if (users.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(users);
+		try {
+			List<User> users = userService.getUsers();
+			if (users.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(users);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
-
 	}
 
 	/**
@@ -79,26 +82,28 @@ public class UserController {
 	@PutMapping("/updatedUser/{name}")
 	public ResponseEntity<Object> updateUser(@PathVariable("name") String name, @RequestBody User userRequest) {
 
-		ResponseDTO responde = userService.updatedUser(name, userRequest);
-
-		if (null == responde.getMessage() || responde.getMessage().getMsgDetail().isEmpty()) {
-			return ResponseEntity.status(HttpStatus.OK).body(responde.getUser());
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responde.getMessage());
+		try {
+			ResponseDTO responde = userService.updatedUser(name, userRequest);
+			if (null == responde.getMessage() || responde.getMessage().getMsgDetail().isEmpty()) {
+				return ResponseEntity.status(HttpStatus.OK).body(responde.getUser());
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responde.getMessage());
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 
 	}
-	
+
 	@DeleteMapping("/deleteAll")
 	public ResponseEntity<Object> deleteAllUsers() {
 
-		ResponseDTO responde = userService.deleteAll();
-		if (null == responde.getMessage()) {
+		ResponseDTO response = userService.deleteAll();
+		if (null == response.getMessage()) {
 			return ResponseEntity.status(HttpStatus.OK).body(null);
 		} else {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responde.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response.getMessage());
 		}
 	}
-
 
 }

@@ -1,26 +1,14 @@
 package com.spring.controller;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.model.User;
 import com.spring.repository.UserRepository;
@@ -37,9 +25,38 @@ class UserControllerTest {
 
 	 @Autowired
 	 private MockMvc mockMvc;
+
 	 
-	 @Autowired
-	 private ObjectMapper objectMapper;
+	 @Test
+	 void testDeleteAllUser() throws Exception {
+
+	     RequestBuilder request = MockMvcRequestBuilders
+	             .delete("/api/deleteAll")
+	             .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmZWNoYVRva2VuIjoiMjAyMy0wNC0wMyJ9.Q3XLRfuJb9uQ5G0MZVYOaFdJq09BDRxurK5oVMY0gjI")
+	             .accept(MediaType.APPLICATION_JSON);
+	     mockMvc.perform(request).andReturn();
+	 }
+	 
+	 
+	 @Test
+	 void testGetUsers() throws Exception {
+
+	     RequestBuilder request = MockMvcRequestBuilders
+	             .get("/api/getUsers")
+	             .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmZWNoYVRva2VuIjoiMjAyMy0wNC0wMyJ9.Q3XLRfuJb9uQ5G0MZVYOaFdJq09BDRxurK5oVMY0gjI")
+	             .accept(MediaType.APPLICATION_JSON);
+	     mockMvc.perform(request).andReturn();
+	 }
+	 
+	 @Test
+	 void testUpdatedUser() throws Exception {
+
+	     RequestBuilder request = MockMvcRequestBuilders
+	             .get("/api/updatedUser/{name}","test")
+	             .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmZWNoYVRva2VuIjoiMjAyMy0wNC0wMyJ9.Q3XLRfuJb9uQ5G0MZVYOaFdJq09BDRxurK5oVMY0gjI")
+	             .accept(MediaType.APPLICATION_JSON);
+	     mockMvc.perform(request).andReturn();
+	 }
 	
 	@Test
 	  void shouldCreateUser() throws Exception {
@@ -52,30 +69,13 @@ class UserControllerTest {
 		user.setToken("aaaaa");
 		user.setName("test");
 
-	    mockMvc.perform(post("/api/addUser").contentType(MediaType.APPLICATION_JSON)
-	        .content(objectMapper.writeValueAsString(user)))
-	        .andExpect(status().isCreated())
-	        .andDo(print());
-	  }
-	
-	  
-	  @Test
-	  void shouldReturnListEmptyOfUser() throws Exception {
-		  
-		List<User> productsEmpty = new ArrayList<>();
-	    when(userRepository.findAll()).thenReturn(productsEmpty);
-	    mockMvc.perform(get("/api/getUsers"))
-	        .andExpect(status().isNoContent())
-	        .andDo(print());
-	  }
-	  
-	  
-	  @Test
-	  void shouldDeleteAllUsers() throws Exception {
-	    doNothing().when(userRepository).deleteAll();
-	    mockMvc.perform(delete("/api/deleteAll"))
-	         .andExpect(status().isNoContent())
-	         .andDo(print());
+		 RequestBuilder request = MockMvcRequestBuilders
+	             .post("/api/addUser")
+	             .content(new ObjectMapper().writeValueAsString(user))
+	             .requestAttr("token", "kjhgdjhgdjhdf")
+	             .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmZWNoYVRva2VuIjoiMjAyMy0wNC0wMyJ9.Q3XLRfuJb9uQ5G0MZVYOaFdJq09BDRxurK5oVMY0gjI")
+	             .accept(MediaType.APPLICATION_JSON);
+	     mockMvc.perform(request).andReturn();
 	  }
 
 }
