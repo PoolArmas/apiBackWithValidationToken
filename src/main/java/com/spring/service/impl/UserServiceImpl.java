@@ -81,6 +81,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
+	 * Method Validate Email
+	 *
+	 * @paramuserRequest
+	 * @paramResponse
+	 * @return
+	 */
+	private ResponseDTO validationFormatEmail(User userRequest, ResponseDTO response) {
+
+		String regex = "^[a-zA-Z]+@[a-zA-Z]+\\.[a-zA-Z]{2}$";
+
+		if (userRequest.getEmail().matches(regex)) {
+			return response;
+		} else {
+			response.setMessage(new MessageDTO("Error Format Email"));
+		}
+		return response;
+	}
+
+	/**
 	 * Method Validate Password
 	 * 
 	 * @paramuserRequest
@@ -109,25 +128,6 @@ public class UserServiceImpl implements UserService {
 
 		if (null != userRepository.findByEmail(userRequest.getEmail())) {
 			response.setMessage(new MessageDTO("Error Email Exist!"));
-		}
-		return response;
-	}
-
-	/**
-	 * Method Validate Email
-	 * 
-	 * @paramuserRequest
-	 * @paramResponse
-	 * @return
-	 */
-	private ResponseDTO validationFormatEmail(User userRequest, ResponseDTO response) {
-
-		String regex = "^[a-zA-Z]+@[a-zA-Z]+\\.[a-zA-Z]{2}$";
-
-		if (userRequest.getEmail().matches(regex)) {
-			return response;
-		} else {
-			response.setMessage(new MessageDTO("Error Format Email"));
 		}
 		return response;
 	}
@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService {
 				n.setLastLogin(LocalDateTime.now());
 				n.setModified(LocalDateTime.now());
 				userRepository.save(n);
-				updatedPHones(userRequest, n);
+				updatedPhones(userRequest, n);
 				response.setMessage(null);
 				response.setUser(createdUserDTOResponse(n));
 				// Email Diferent, but Validations OK
@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService {
 				n.setLastLogin(LocalDateTime.now());
 				n.setModified(LocalDateTime.now());
 				userRepository.save(n);
-				updatedPHones(userRequest, n);
+				updatedPhones(userRequest, n);
 				response.setMessage(null);
 				response.setUser(createdUserDTOResponse(n));
 				// With Error in Validations, return ERROR
@@ -209,7 +209,13 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	private void updatedPHones(User userRequest, User n) {
+	/**
+	 * Method UpdatedPhones
+	 *
+	 * @param userRequest
+	 * @param n
+	 */
+	private void updatedPhones(User userRequest, User n) {
 
 		// delete Phones by userId
 		phoneRepository.findAll().forEach( phone ->{
