@@ -17,10 +17,19 @@
 	 
 	 the Api Validate Token with Date Now
 	 
-2._ Import Collection Postman , in your Postman local
+2._ Import Collection Postman , in your Postman local By test This API
 	 
-	 file ubication : src\test\java\com\spring\CollectionPostman
-	 
+	apiDesafioOnlyBack\backTest\spring-boot-CRUD\src\main\resources	 
+	
+3._ EndPoints:
+	
+	CreatedUser -> creation New User
+	
+	getUsers -> Get All Users save in BD
+	
+	UpdatedUserByName -> Updated  User exist in BD
+	
+	DeleteAll -> Delete all Rows in BD
 	 
 
 
