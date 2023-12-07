@@ -8,9 +8,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +30,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 		if (existeJWTToken(request, response)) {
 			if(validateToken(request)) {
-				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+				/*UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
 						new UsernamePasswordAuthenticationToken("", null, null);
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -40,6 +38,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 				// that the current user is authenticated. So it passes the
 				// Spring Security Configurations successfully.
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+				 */
 			} else {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				(response).sendError(HttpServletResponse.SC_FORBIDDEN);

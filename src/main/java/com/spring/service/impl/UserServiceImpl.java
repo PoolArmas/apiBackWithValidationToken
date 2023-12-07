@@ -234,8 +234,8 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Created UserDTO by ResponseDTO
 	 * 
-	 * @param n
-	 * @return
+	 * @param user
+	 * @retur n
 	 */
 	private UserDTO createdUserDTOResponse(User user) {
 
