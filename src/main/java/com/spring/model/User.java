@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "USER_TEST")
 public class User {
-
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name = "user_id")
@@ -133,7 +132,7 @@ public class User {
 	}
 
 	public User(long id, String name,
-			@Email(message = "Error de formato de correo electrónico") @NotEmpty(message = "Error, Email Empty!") String email,
+			@Email(message = "Error de format email!") @NotEmpty(message = "Error, Email Empty!") String email,
 			@NotEmpty(message = "Error, Password Empty!") String password, List<Phone> phones, String token,
 			LocalDateTime created, LocalDateTime lastLogin, LocalDateTime modified, boolean isactive) {
 		super();

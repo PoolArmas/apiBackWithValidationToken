@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "PHONE")
 public class Phone {
-	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private long id;
@@ -15,8 +14,8 @@ public class Phone {
 	@Column(name = "number")
 	private int number;
 	
-	@Column(name = "citycode")
-	private int citycode;
+	@Column(name = "cityCode")
+	private int cityCode;
 	
 	@Column(name = "countrycode")
 	private int countrycode;
@@ -50,12 +49,12 @@ public class Phone {
 		this.number = number;
 	}
 
-	public int getCitycode() {
-		return citycode;
+	public int getCityCode() {
+		return cityCode;
 	}
 
-	public void setCitycode(int citycode) {
-		this.citycode = citycode;
+	public void setCityCode(int cityCode) {
+		this.cityCode = cityCode;
 	}
 
 	public int getCountrycode() {
@@ -66,16 +65,17 @@ public class Phone {
 		this.countrycode = countrycode;
 	}
 
-	public Phone(long id, int number, int citycode, int countrycode, User userId) {
+	public Phone(long id, int number, int cityCode, int countrycode, User userId) {
 		super();
 		this.id = id;
 		this.number = number;
-		this.citycode = citycode;
+		this.cityCode = cityCode;
 		this.countrycode = countrycode;
 		this.user = userId;
 	}
 
 	public Phone() {
+		super();
 	}
 
 }

@@ -42,13 +42,13 @@ class UserModelTest {
 		user.setName("test");
 		
 		phone = new Phone();
-		phone.setCitycode(1);
+		phone.setCityCode(1);
 		phone.setCountrycode(1);
 		phone.setId(1);
 		phone.setNumber(1);
 		phone.setUser(user);
 		
-		assertThat(phone.getCitycode()).isEqualTo(1);
+		assertThat(phone.getCityCode()).isEqualTo(1);
 		assertThat(phone.getCountrycode()).isEqualTo(1);
 		assertThat(phone.getId()).isEqualTo(1);
 		assertThat(phone.getNumber()).isEqualTo(1);

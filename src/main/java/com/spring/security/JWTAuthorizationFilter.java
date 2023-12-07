@@ -8,7 +8,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,16 +24,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
+	private static final Logger LOGGER = LogManager.getLogger(JWTAuthorizationFilter.class.getName());
 	private static final String HEADER = "Authorization";
 	private static final String PREFIX = "Bearer ";
 
+	/**
+	 *
+	 * @param request - obj
+	 * @param response - obj
+	 * @param chain - obj
+	 * @throws ServletException Error
+	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 
-		if (existeJWTToken(request, response)) {
+		if (existJWTToken(request, response)) {
 			if(validateToken(request)) {
-				/*UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
 						new UsernamePasswordAuthenticationToken("", null, null);
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -38,8 +49,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 				// that the current user is authenticated. So it passes the
 				// Spring Security Configurations successfully.
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-				 */
+				LOGGER.info("Success Token");
 			} else {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				(response).sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -49,13 +59,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 			SecurityContextHolder.clearContext();
 		}
 		chain.doFilter(request, response);
-
 	}
 
 	/**
 	 * Only Validation Date Token
-	 * @paramHttpServletRequest - request
-	 * @return
+	 * @ HttpServletRequest - request
+	 * @ return Obj
 	 */
 	private boolean validateToken(HttpServletRequest request) {
 		
@@ -73,15 +82,20 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 			 }
 
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			LOGGER.error(e.toString());
 		} 
 		return false;		
 	}
 
-	private boolean existeJWTToken(HttpServletRequest request, HttpServletResponse res) {
+	/**
+	 *
+	 * @param request - obj
+	 * @param res - obj
+	 * @return boolean data
+	 */
+	private boolean existJWTToken(HttpServletRequest request, HttpServletResponse res) {
 		String authenticationHeader = request.getHeader(HEADER);
 		return (authenticationHeader == null || authenticationHeader.startsWith(PREFIX));
 	}
-	
 
 }

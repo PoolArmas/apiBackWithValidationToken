@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Method INIT Validate - Email
 	 * 
-	 * @paramuserRequest - user
-	 * @return
+	 * @param userRequest - user
+	 * @return  ResponseDTO
 	 */
 	private ResponseDTO validations(User userRequest) {
 
@@ -83,9 +83,9 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Method Validate Email
 	 *
-	 * @paramuserRequest
-	 * @paramResponse
-	 * @return
+	 * @param userRequest - request
+	 * @param response - res
+	 * @return ResponseDTO obj
 	 */
 	private ResponseDTO validationFormatEmail(User userRequest, ResponseDTO response) {
 
@@ -102,8 +102,8 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Method Validate Password
 	 * 
-	 * @paramuserRequest
-	 * @return
+	 * @param userRequest request
+	 * @return ResponseDTO
 	 */
 	private ResponseDTO validatePaswwords(User userRequest, ResponseDTO response) {
 
@@ -120,9 +120,9 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Method Validate Email Exist In BD
 	 * 
-	 * @paramuserRequest
-	 * @paramResponse
-	 * @return
+	 * @param userRequest  - obj
+	 * @param response res
+	 * @return ResponseDTO res
 	 */
 	private ResponseDTO validationExistEmail(User userRequest, ResponseDTO response) {
 
@@ -133,10 +133,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * Created User
-	 * 
-	 * @param response
-	 * @return
+	 * Save User
+	 * @param userRequest - request
+	 * @param response - res
+	 * @return ResponseDTO obj
 	 */
 	private ResponseDTO saveUser(User userRequest, ResponseDTO response) {
 
@@ -153,13 +153,18 @@ public class UserServiceImpl implements UserService {
 		return response;
 	}
 
+	/**
+	 * Save Phones
+	 *
+	 * @param findByEmail - User
+	 * @param phones . List
+	 */
 	private void savePhone(User findByEmail, List<Phone> phones) {
 		phones.forEach(phone -> {
-			Phone pho = phoneRepository.findByCitycode(phone.getCitycode());
+			Phone pho = phoneRepository.findByCityCode(phone.getCityCode());
 			pho.setUser(findByEmail);
 			phoneRepository.save(pho);
 		});
-
 	}
 
 	/**
@@ -169,9 +174,7 @@ public class UserServiceImpl implements UserService {
 	public ResponseDTO updatedUser(String name, User userRequest) {
 
 		ResponseDTO response = validations(userRequest);
-
 		User old = userRepository.findByName(name);
-
 		// Exist User
 		if (null != old) {
 			// Equals Email, Updated all without Email
@@ -185,7 +188,7 @@ public class UserServiceImpl implements UserService {
 				updatedPhones(userRequest, n);
 				response.setMessage(null);
 				response.setUser(createdUserDTOResponse(n));
-				// Email Diferent, but Validations OK
+				// Email Different, but Validations OK
 			} else if (null == response.getMessage()) {
 				User n = old;
 				n.setEmail(userRequest.getEmail());
@@ -204,16 +207,14 @@ public class UserServiceImpl implements UserService {
 		} else {
 			response.setMessage(new MessageDTO("Error Not Found User"));
 		}
-
 		return response;
-
 	}
 
 	/**
 	 * Method UpdatedPhones
 	 *
-	 * @param userRequest
-	 * @param n
+	 * @param userRequest - request
+	 * @param n Data User
 	 */
 	private void updatedPhones(User userRequest, User n) {
 
@@ -225,17 +226,16 @@ public class UserServiceImpl implements UserService {
 		});
 		// Created new Phones
 		userRequest.getPhones().forEach(phone ->{
-			Phone pho = phone;
-			pho.setUser(n);
-			phoneRepository.save(pho);
+			phone.setUser(n);
+			phoneRepository.save(phone);
 		});
 	}
 
 	/**
 	 * Created UserDTO by ResponseDTO
 	 * 
-	 * @param user
-	 * @retur n
+	 * @param user - data
+	 * @return UserDTO Response
 	 */
 	private UserDTO createdUserDTOResponse(User user) {
 

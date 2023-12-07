@@ -13,6 +13,8 @@
 
 1._ Genereta Token in https://jwt.io/
 
+	token example : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmZWNoYVRva2VuIjoiMjAyMy0xMS0yNCJ9.D_CTNND7odd0Q6cMt6ZkdQ73R8aEpGgYbVk0zFDVVDo
+
      with payload :  "fechaToken": "2023-04-02",  date is a example
 	 
 	 the Api Validate Token with Date Now

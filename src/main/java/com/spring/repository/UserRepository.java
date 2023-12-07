@@ -11,7 +11,17 @@ import com.spring.model.User;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
+  /**
+   *
+   * @param email - string
+   * @return User Data
+   */
   User findByEmail(String email);
-  
+
+  /**
+   *
+   * @param name - string
+   * @return User Data
+   */
   User findByName(String name);
 }

@@ -33,7 +33,7 @@ public class UserController {
 	/**
 	 * MEthod getUsers
 	 * 
-	 * @return
+	 * @return ResponseEntity obj
 	 */
 	@GetMapping("/getUsers")
 	public ResponseEntity<Object> getAllUsers() {
@@ -53,9 +53,9 @@ public class UserController {
 	/**
 	 * MEthod addUser
 	 * 
-	 * @param userRequest
-	 * @param token
-	 * @return
+	 * @param userRequest - request
+	 * @param token - token
+	 * @return ResponseEntity Obj
 	 */
 	@PostMapping("/addUser")
 	public ResponseEntity<Object> createUser(@RequestBody User userRequest, @RequestAttribute String token) {
@@ -65,7 +65,6 @@ public class UserController {
 
 		if (null == responde.getMessage() || responde.getMessage().getMsgDetail().isEmpty()) {
 			return new ResponseEntity<>(responde.getUser(), HttpStatus.CREATED);
-
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responde.getMessage());
 		}
@@ -74,9 +73,9 @@ public class UserController {
 	/**
 	 * MEthod updatedUser
 	 * 
-	 * @param name
-	 * @param userRequest
-	 * @return
+	 * @param name - string
+	 * @param userRequest - data
+	 * @return ResponseEntity obj
 	 */
 	@PutMapping("/updatedUser/{name}")
 	public ResponseEntity<Object> updateUser(@PathVariable("name") String name, @RequestBody User userRequest) {
@@ -94,6 +93,11 @@ public class UserController {
 
 	}
 
+	/**
+	 * Delete all in Cascade
+	 *
+	 * @return ResponseEntity obj
+	 */
 	@DeleteMapping("/deleteAll")
 	public ResponseEntity<Object> deleteAllUsers() {
 
